@@ -1,20 +1,8 @@
 <script setup>
-    import {ref, onMounted} from 'vue'
-    import axios from 'axios'
+import { useFetch } from 'nuxt/app';
 
-    let posts = ref({})
-    let isLoading = ref(false)
-    onMounted(async () => {
-            getStudents()
-    })
-    function getStudents(){
-            isLoading = true
-            axios.get(`https://jsonplaceholder.typicode.com/posts`).then(res => {
-                isLoading = false
-                posts = res.data.posts
-            })
-
-    }
+    const {data: posts} = useFetch('https://jsonplaceholder.typicode.com/posts?_limit=10')
+    
     function deleteStudent(studentId){
         if(confirm('Are you sure, you want to delete this data ?')){
             axios.delete(`https://jsonplaceholder.typicode.com/posts/${studentId}`).then(res =>{

@@ -3,41 +3,19 @@ import { ref,reactive,onMounted } from 'vue';
 import axios from 'axios'
 import { useRoute } from 'vue-router';
 const route = useRoute();
-    useHead({
-        title:'Home Page'
-    })
-    const post = ref({})
-    let isLoading = ref(false)
-    let errors = ref({})
-    const postId = route.params.id
-    function getStudent(studentId){
-        isLoading = true
-        axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}`).then(res =>{
-            isLoading = false
-            post = res.data.post
-        })
-
-    }
+const {data : post} = useFetch(() => "https://jsonplaceholder.typicode.com/posts/" + route.params.id)
 function EditPost() {
-
     isLoading = true
-    axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}`).then(res =>{
-            isLoading = false
-            post = res.data.post
-            console.log(post)
-        })
-    // axios.put(`https://jsonplaceholder.typicode.com/posts/${postId}`,post).then(res=>{
-    //     alert(res)
-    //     isLoading = false
-    //    errors = {}
-    // })
-    // .catch(function(error){
-    //     console.error(error)
-    //         // errors = error.response.data.errors 
+    axios.put(`https://jsonplaceholder.typicode.com/posts/${route.params.id}`,post).then(res=>{
+        alert(res)
+        isLoading = false
+       errors = {}
+    })
+    .catch(function(error){
+        console.error(error)
+            // errors = error.response.data.errors 
         
-    // })
-
-  
+    })
 }
 </script>
 <template>
